@@ -37,7 +37,11 @@ while True:
     if (insideTemp <= targetTemp):
         desiredState = 0
     else:
-        if (insideTemp > float(outsideTemp)):
+        delta = insideTemp - float(outsideTemp)
+        if (5 <= now.hour <= 10):
+            print('morning shuts off 1° early')
+            delta-=1
+        if delta > 0:
             desiredState = 1
         else:
             desiredState = 0
