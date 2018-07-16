@@ -4,6 +4,7 @@ import weather
 import time
 import datetime
 import database
+import configparser
 
 targetTemp = 67.0
 updateRate = 290  # seconds
@@ -11,6 +12,15 @@ updateRate = 290  # seconds
 nt = nestTest.NestTest()
 
 while True:
+
+    configuration = configparser.ConfigParser()
+    configuration.read('config.ini')
+
+    targetTemp = configuration['APP'].getfloat('target_temp')
+    updateRate = configuration['APP'].getint('update_frequency')
+    if updateRate != 290:
+        print("next update in {0} seconds".format(updateRate))
+
     now = datetime.datetime.now()
 
     outsideTemp = weather.wunderGroundTemp()
@@ -38,9 +48,9 @@ while True:
         desiredState = 0
     else:
         delta = insideTemp - float(outsideTemp)
-        if (5 <= now.hour <= 10):
-            print('morning shuts off 1° early')
-            delta-=1
+        if (6 <= now.hour <= 9):
+            print('morning shuts off 2° early')
+            delta -= 2
         if delta > 0:
             desiredState = 1
         else:

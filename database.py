@@ -15,7 +15,16 @@ def insert(outsideTemp, insideTemp, targetTemp, fanState):
     finally:
         connection.close()
 
-
+def select_today():
+    sql = "SELECT * FROM FANS WHERE DATE(time)=CURRENT_DATE()"
+    try:
+        connection = pymysql.connect(host='localhost', db='fans')
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result=cursor.fetchall()
+    finally:
+        connection.close()
+    return result
 '''
 
 CREATE TABLE `FANS` (
