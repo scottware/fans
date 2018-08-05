@@ -1,5 +1,5 @@
 from flask import Flask, render_template, send_file
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import database
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SubmitField, RadioField
@@ -17,21 +17,21 @@ def hello():
     # return "Hello World!"
 
 
-@app.route("/foo")
-def foo():
-    results = database.select_today()
-
-    x = []
-    y = []
-    for result in results:
-        x.append(result[0])
-        y.append(result[1])
-    print(x)
-    print(y)
-    plt.plot(x, y)
-    plt.savefig('new_plot.png')
-
-    return render_template('index.html', times=results)
+# @app.route("/foo")
+# def foo():
+#     results = database.select_today()
+#
+#     x = []
+#     y = []
+#     for result in results:
+#         x.append(result[0])
+#         y.append(result[1])
+#     print(x)
+#     print(y)
+#     plt.plot(x, y)
+#     plt.savefig('new_plot.png')
+#
+#     return render_template('index.html', times=results)
 
 
 @app.route("/bar")
