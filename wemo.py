@@ -14,4 +14,3 @@ def getWeMo():
     devices = pywemo.discover_devices()
     WeMoFan = next((x for x in devices if x.name == WeMoName), None)
     return WeMoFan
- 
