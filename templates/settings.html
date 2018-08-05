@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+</head>
+<body>
+Status: {{ settings['status'] }} <br>
+Temp: {{ settings['target_temp'] }} <br>
+Mode: {{ settings['mode'] }} <br>
+
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        <p>
+        </p>
+        <p>{{ form.status }}</p>
+        <p>{{ form.mode }}</p>
+        <p>{{ form.target_temp}}</p>
+{% for error in form.target_temp.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+
+        <p>{{ form.submit() }}</p>
+    </form>
+
+</body>
+</html>
