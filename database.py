@@ -17,14 +17,25 @@ def insert(outsideTemp, insideTemp, targetTemp, fanState):
 
 def select_today():
     sql = "SELECT * FROM FANS WHERE DATE(time)=CURRENT_DATE()"
+    return select_sql(sql)
+
+def select_last():
+    sql="select * from FANS order by time desc limit 1"
+    return select_sql(sql)
+
+
+def select_sql(sql):
     try:
         connection = pymysql.connect(host='localhost', db='fans')
         cursor = connection.cursor()
         cursor.execute(sql)
-        result=cursor.fetchall()
+        result = cursor.fetchall()
     finally:
         connection.close()
+
     return result
+
+
 '''
 
 CREATE TABLE `FANS` (

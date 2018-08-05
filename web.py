@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 
-@app.route("/")
-def hello():
+@app.route("/data")
+def data():
     result = database.select_today()
     return str(result);
     # return "Hello World!"
@@ -40,9 +40,8 @@ def bar():
 
 
 
-@app.route("/settings", methods=['GET', 'POST'])
-def setting():
-    import pprint
+@app.route("/", methods=['GET', 'POST'])
+def index():
     configuration = configparser.ConfigParser()
     configuration.read('config.ini')
 
@@ -59,7 +58,11 @@ def setting():
     form.mode.default = configuration['APP']['mode']
     form.target_temp.default = configuration['APP']['target_temp']
     form.process()
-    return render_template('settings.html', settings=configuration['APP'], form=form)
+
+    current_climate= database.select_last()
+    current_climate=current_climate[0]
+    # current_climate[0]=current_climate[0].strftime("%c")
+    return render_template('settings.html', settings=configuration['APP'], form=form, current_climate=current_climate)
 
 
 def tempRange(min=-1, max=-1):

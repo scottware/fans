@@ -5,9 +5,11 @@
     <title>Settings</title>
 </head>
 <body>
-Status: {{ settings['status'] }} <br>
-Temp: {{ settings['target_temp'] }} <br>
-Mode: {{ settings['mode'] }} <br>
+
+{{ current_climate[0].strftime("%c") }}<br>
+Outside Temp: {{ current_climate[1] }}<br>
+Inside Temp: {{ current_climate[2] }}<br>
+Target Temp: {{ current_climate[3] }}<br>
 
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
