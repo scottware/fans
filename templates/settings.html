@@ -48,6 +48,9 @@
 <body style="width: 350px;">
 
 {{ current_climate[0].strftime("%c") }}<br>
+Fans are {{ fan_status }}
+
+
 <div><h1 class="qq l">Outside Temp:</h1><h1 class="qq r">{{ current_climate[1] }}º</h1></div>
 <div><h1 class="qq l">Inside Temp:</h1><h1 class="qq r">{{ current_climate[2] }}º</h1></div>
 <div><h1 class="qq l">Target Temp:</h1><h1 class="qq r">{{ current_climate[3] }}º</h1></div>

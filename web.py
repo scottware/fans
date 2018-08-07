@@ -61,8 +61,12 @@ def index():
 
     current_climate= database.select_last()
     current_climate=current_climate[0]
-    # current_climate[0]=current_climate[0].strftime("%c")
-    return render_template('settings.html', settings=configuration['APP'], form=form, current_climate=current_climate)
+    fan_status = "off"
+    if current_climate[4] == 1:
+        current_climate[5] = "on"
+
+    return render_template('settings.html', settings=configuration['APP'], form=form, current_climate=current_climate,\
+                           fan_status=fan_status)
 
 
 def tempRange(min=-1, max=-1):

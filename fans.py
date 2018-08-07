@@ -26,17 +26,10 @@ while True:
         time.sleep(10)
         continue
 
-    if configuration['APP'].get('status') == 'off':
-        if wemoSwitch.get_state() != 0:
-            wemoSwitch.set_state(0)
-        print("--- State is OFF {0} ---".format(now.strftime("%c")))
-        time.sleep(updateRate)
-        continue
-
     outsideTemp = weather.wunderGroundTemp()
     if (outsideTemp == None):
         print("failed to get temp")
-        time.sleep(5)
+        time.sleep(10)
         continue
 
     try:
@@ -48,6 +41,15 @@ while True:
         time.sleep(10)
         continue
 
+    if configuration['APP'].get('status') == 'off':
+        if wemoSwitch.get_state() != 0:
+            wemoSwitch.set_state(0)
+        print(
+            "{0}: {1:4} {2:3} {3:4} {4} -- System is OFF".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
+                                                wemoSwitch.get_state()))
+        database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
+        time.sleep(updateRate)
+        continue
 
     if (insideTemp <= targetTemp):
         desiredState = 0
