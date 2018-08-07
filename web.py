@@ -63,7 +63,7 @@ def index():
     current_climate=current_climate[0]
     fan_status = "off"
     if current_climate[4] == 1:
-        current_climate[5] = "on"
+        fan_status = "on"
 
     return render_template('settings.html', settings=configuration['APP'], form=form, current_climate=current_climate,\
                            fan_status=fan_status)
