@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="width: -webkit-min-content;">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <title>Settings</title>
@@ -7,24 +7,25 @@
         div {
             padding: 0px;
             overflow: auto;
-            width: 350px;
         }
         p {
             height: 5px;
         }
         ul {
-            min-width: 696px;
             list-style: none;
             padding-top: 20px;
-            font-size: 20px;
         }
         ul li {
             display: inline;
             padding: 20px;
         }
-        input {
-            font-size: 20px;
+        label {
+            font-size: 2em;
         }
+        input {
+            font-size: 2em;
+        }
+
         input[type=submit] {
             padding:5px 15px;
             background:#ccc;
@@ -36,6 +37,9 @@
 
         .qq {
             margin: 5px;
+            font-size: 4em;
+            font-weight: bold;
+
         }
         .r {
             float: right;
@@ -45,22 +49,23 @@
         }
     </style>
 </head>
-<body style="width: 350px;">
+<body>
+<div>
+    <div class="l"><label>{{ current_climate[0].strftime("%c") }}</label></div>
+    <div class="r"><label>Fans are {{ fan_status }}</label></div>
+</div>
 
-{{ current_climate[0].strftime("%c") }}<br>
-Fans are {{ fan_status }}
 
-
-<div><h1 class="qq l">Outside Temp:</h1><h1 class="qq r">{{ current_climate[1] }}º</h1></div>
-<div><h1 class="qq l">Inside Temp:</h1><h1 class="qq r">{{ current_climate[2] }}º</h1></div>
-<div><h1 class="qq l">Target Temp:</h1><h1 class="qq r">{{ current_climate[3] }}º</h1></div>
-
+<div><div class="qq l">Outside Temp:</div><div class="qq r">{{ current_climate[1] }}º</div></div>
+<div><div class="qq l">Inside Temp:</div><div class="qq r">{{ current_climate[2] }}º</div></div>
+<div><div class="qq l">Target Temp:</div><div class="qq r">{{ current_climate[3] }}º</div></div>
+<div>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
 
         {{ form.status }}
         {{ form.mode }}
-        <ul><li>Set Temp</li>
+        <ul><li><label>Set Temp</label></li>
             <li>{{ form.target_temp(size="2")}}</li>
         </ul>
 {% for error in form.target_temp.errors %}
@@ -69,6 +74,7 @@ Fans are {{ fan_status }}
 
         <ul><li>{{ form.submit() }}</li></ul>
     </form>
-
+</div>
+</div>
 </body>
 </html>
