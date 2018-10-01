@@ -18,8 +18,13 @@ def outsideTemp():
     s = tree.find_class("stationobs-detail")
     tr = s[0].findall('tr')
     last = tr[2].find_class('u-eng')
-    temp, unit = last[0].text.split('°')
-    return temp
+    try:
+        temp, unit = last[0].text.split('°')
+        return temp
+    except:
+        print("failed to parse:")
+        print(page.content)
+        return None
 
 
 def wunderGroundTemp():
