@@ -1,6 +1,7 @@
 from lxml import html
 import requests
 import configparser
+from pprint import pprint
 
 configuration = configparser.ConfigParser()
 configuration.read('config.ini')
@@ -31,19 +32,35 @@ def wunderGroundTemp():
     page = requests.get(wunderground_station)
 
     tree = html.fromstring(page.content)
+    # try:
+    #     s = tree.get_element_by_id("curTemp")
+    # except:
+    #     print("failed to parse:")
+    #     print(page.content)
+    #     return None
+    # try:
+    #     obj = s.find_class("wx-value")
+    #     temp = obj[0].text
+    # except:
+    #     print("failed to parse (2):")
+    #     print(page.content)
+    #     temp = None
     try:
-        s = tree.get_element_by_id("curTemp")
+        s = tree.find_class("test-true wu-unit wu-unit-temperature is-degree-visible ng-star-inserted")
     except:
         print("failed to parse:")
         print(page.content)
         return None
+
     try:
-        obj = s.find_class("wx-value")
-        temp = obj[0].text
+        t = s[0].text_content()
+        temp = t[0:-1]
+
     except:
         print("failed to parse (2):")
         print(page.content)
         temp = None
+
     return temp
 
 

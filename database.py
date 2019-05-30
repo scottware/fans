@@ -37,6 +37,11 @@ def select_sql(sql):
 
 
 '''
+CREATE USER 'pi'@'localhost';
+GRANT ALL on *.* to 'pi'@'localhost' WITH GRANT OPTION;
+
+create database fans;
+use fans;
 
 CREATE TABLE `FANS` (
 	`time` TIMESTAMP NOT NULL,

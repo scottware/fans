@@ -10,6 +10,8 @@ import configparser
 # updateRate = 290  # seconds
 
 nt = nestTest.NestTest()
+print ("{0}: {1:4} {2:3} {3:4} {4}".format("Time", "outsideTemp", "insideTemp", "targetTemp",
+                                    "wemoSwitch"))
 
 while True:
 
