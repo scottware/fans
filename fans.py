@@ -20,7 +20,7 @@ while True:
     targetTemp = configuration['APP'].getfloat('target_temp')
     updateRate = configuration['APP'].getint('update_frequency')
     now = datetime.datetime.now()
-
+    desiredState = 0
 
     wemoSwitch = wemo.getWeMo()
     if wemoSwitch == None:
@@ -38,7 +38,7 @@ while True:
         insideTemp = nt.getNestTemp()
     except:
         print("failed to connect to nest:")
-        print(nt.NestBedroom)
+        # print(nt.NestBedroom)
         nt.NestBedroom = None
         time.sleep(10)
         continue
