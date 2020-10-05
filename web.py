@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SubmitField, RadioField
 from wtforms.validators import DataRequired, ValidationError
 import configparser
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
@@ -67,6 +68,27 @@ def index():
 
     return render_template('settings.html', settings=configuration['APP'], form=form, current_climate=current_climate,\
                            fan_status=fan_status)
+
+
+
+@app.route("/tojson", methods=['GET', 'POST'])
+def tojson():
+    configuration = configparser.ConfigParser()
+    configuration.read('config.ini')
+
+    current_climate= database.select_last()
+    current_climate=current_climate[0]
+
+    state = {}
+    state['time'] = current_climate[0].strftime("%c")
+    state['inside_temp'] = current_climate[2]
+    state['outside_temp'] = current_climate[1]
+    state['target_temp_saved'] = configuration['APP']['target_temp']
+    state['target_temp'] = current_climate[3]
+    state['fan_status'] = configuration['APP']['status']
+    state['mode'] = configuration['APP']['mode']
+    return  json.dumps(state)
+
 
 
 def tempRange(min=-1, max=-1):
