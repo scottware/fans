@@ -86,6 +86,7 @@ def tojson():
     state['target_temp_saved'] = configuration['APP']['target_temp']
     state['target_temp'] = current_climate[3]
     state['fan_status'] = configuration['APP']['status']
+    state['fan_state'] = "on" if current_climate[4] == 1 else "off"
     state['mode'] = configuration['APP']['mode']
     return  json.dumps(state)
 
