@@ -1,5 +1,6 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, request
 # import matplotlib.pyplot as plt
+
 import database
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SubmitField, RadioField
@@ -76,6 +77,15 @@ def tojson():
     configuration = configparser.ConfigParser()
     configuration.read('config.ini')
 
+    if request.method == 'POST':
+        configuration['APP']['target_temp']=str(request.json['target_temp'])
+        configuration['APP']['mode']=request.json['mode']
+        configuration['APP']['status']=request.json['status']
+
+        with open('config.ini', 'w') as configfile:
+            configuration.write(configfile)
+
+#    if request.method == 'GET':
     current_climate= database.select_last()
     current_climate=current_climate[0]
 
@@ -88,6 +98,7 @@ def tojson():
     state['fan_status'] = configuration['APP']['status']
     state['fan_state'] = "on" if current_climate[4] == 1 else "off"
     state['mode'] = configuration['APP']['mode']
+    # print(json.dumps(state))
     return  json.dumps(state)
 
 
