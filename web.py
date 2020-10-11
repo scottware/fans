@@ -80,7 +80,7 @@ def tojson():
     if request.method == 'POST':
         configuration['APP']['target_temp']=str(request.json['target_temp'])
         configuration['APP']['mode']=request.json['mode']
-        configuration['APP']['status']=request.json['status']
+        configuration['APP']['status']=request.json['system_state']
 
         with open('config.ini', 'w') as configfile:
             configuration.write(configfile)
@@ -90,12 +90,12 @@ def tojson():
     current_climate=current_climate[0]
 
     state = {}
-    state['time'] = current_climate[0].strftime("%c")
+    state['time'] = current_climate[0].timestamp()
     state['inside_temp'] = current_climate[2]
     state['outside_temp'] = current_climate[1]
     state['target_temp_saved'] = configuration['APP']['target_temp']
     state['target_temp'] = current_climate[3]
-    state['fan_status'] = configuration['APP']['status']
+    state['system_state'] = configuration['APP']['status']
     state['fan_state'] = "on" if current_climate[4] == 1 else "off"
     state['mode'] = configuration['APP']['mode']
     # print(json.dumps(state))
