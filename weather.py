@@ -54,7 +54,7 @@ def wunderGroundTemp():
 
     try:
         t = s[0].text_content()
-        temp = t[0:-1]
+        temp = t[0:-3]
 
     except:
         print("failed to parse (2):")
