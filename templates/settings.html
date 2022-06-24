@@ -47,12 +47,19 @@
         .l {
             float: left;
         }
+        #circle {
+          width: 50px;
+          height: 50px;
+          background: {{ webstate['desiredState'] }};
+          border-radius: 50%
+        }
+
     </style>
 </head>
 <body>
 <div>
     <div class="l"><label>{{ webstate['time'] }}</label></div>
-    <div class="r"><label>Fans are {{ webstate['desiredState'] }}</label></div>
+    <div class="r"><label>Fans are {{ webstate['desiredState'] }}</label><br><div id="circle"></div></div>
 </div>
 
 

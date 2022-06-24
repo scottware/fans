@@ -96,7 +96,7 @@ while True:
     webstate['kitchenTemp'] = kitchenTemp
     webstate['bedroomTemp'] = bedroomTemp
     webstate['targetTemp'] = targetTemp
-    webstate['desiredState'] = desiredState
+    webstate['desiredState'] = 'green' if desiredState == 1 else 'red'
     file = open("webstate.json", "w")
     file.write(json.dumps(webstate))
     file.close()
