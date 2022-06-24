@@ -67,7 +67,15 @@ def index():
     if current_climate[4] == 1:
         fan_status = "on"
 
-    return render_template('settings.html', settings=configuration['APP'], form=form, current_climate=current_climate,\
+
+
+    file = open('webstate.json', 'r')
+    webstate = json.load(file)
+    file.close()
+
+
+
+    return render_template('settings.html', settings=configuration['APP'], form=form, webstate=webstate,\
                            fan_status=fan_status)
 
 
