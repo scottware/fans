@@ -11,6 +11,6 @@ WeMoFan = None
 
 
 def getWeMo():
-    devices = pywemo.discover_devices()
+    devices = pywemo.discover_devices() ## <-exception crashes.
     WeMoFan = next((x for x in devices if x.name == WeMoName), None)
     return WeMoFan

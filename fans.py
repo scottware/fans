@@ -3,20 +3,31 @@ import nestTest
 import weather
 import time
 import datetime
-import database
+# import database
 import configparser
+import math
 
 # targetTemp = 67.0
 # updateRate = 290  # seconds
 
-nt = nestTest.NestTest()
+configuration = configparser.ConfigParser()
+configuration.read('config.ini')
+client_id = configuration['NEST'].get('client_id')
+client_secret = configuration['NEST'].get('client_secret')
+# nest_auth_url = configuration['NEST'].get('nest_auth_url')
+access_token_cache_file = configuration['NEST'].get('access_token_cache_file')
+# product_version = configuration['NEST'].getint('product_version')
+bedroom_thermostat_name = configuration['NEST'].get('bedroom_thermostat_name')
+kitchen_thermostat_name = configuration['NEST'].get('kitchen_thermostat_name')
+
+bedroomNest = nestTest.NestTest(bedroom_thermostat_name, client_id, client_secret, access_token_cache_file)
+kitchenNest = nestTest.NestTest(kitchen_thermostat_name, client_id, client_secret, access_token_cache_file)
+
 print ("{0}: {1:4} {2:3} {3:4} {4}".format("Time", "outsideTemp", "insideTemp", "targetTemp",
                                     "wemoSwitch"))
 
 while True:
 
-    configuration = configparser.ConfigParser()
-    configuration.read('config.ini')
     targetTemp = configuration['APP'].getfloat('target_temp')
     updateRate = configuration['APP'].getint('update_frequency')
     now = datetime.datetime.now()
@@ -35,11 +46,13 @@ while True:
         continue
 
     try:
-        insideTemp = nt.getNestTemp()
+        bedroomTemp = bedroomNest.getNestTemp()
+        kitchenTemp = kitchenNest.getNestTemp()
     except:
         print("failed to connect to nest:")
         # print(nt.NestBedroom)
-        nt.NestBedroom = None
+        bedroomNest.NestBedroom = None
+        kitchenNest.NestKitchen = None
         time.sleep(10)
         continue
 
@@ -49,10 +62,12 @@ while True:
         print(
             "{0}: {1:4} {2:3} {3:4} {4} -- System is OFF".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
                                                 wemoSwitch.get_state()))
-        database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
-        time.sleep(updateRate)
+        # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
+        sleepTime = updateRate - math.floor(time.time()) % updateRate
+        time.sleep(sleepTime)
         continue
 
+    insideTemp = (bedroomTemp + kitchenTemp) / 2.0
     if (insideTemp <= targetTemp):
         desiredState = 0
     else:
@@ -72,7 +87,8 @@ while True:
     print(
         "{0}: {1:4} {2:3} {3:4} {4}".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
                                             wemoSwitch.get_state()))
-    database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
+    # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
+    sleepTime = updateRate - math.floor(time.time()) % updateRate
     if updateRate != 290:
-        print("next update in {0} seconds".format(updateRate))
-    time.sleep(updateRate)
+        print("next update in {0} seconds".format(sleepTime))
+    time.sleep(sleepTime)
