@@ -91,7 +91,7 @@ while True:
 
     #store for webview
     webstate = {}
-    webstate['time'] = now.strftime("%c")
+    webstate['time'] = now
     webstate['outsideTemp'] = outsideTemp
     webstate['kitchenTemp'] = kitchenTemp
     webstate['bedroomTemp'] = bedroomTemp
