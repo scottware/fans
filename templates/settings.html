@@ -56,10 +56,10 @@
 </div>
 
 
-<div><div class="qq l">Outside Temp:</div><div class="qq r">{{ current_climate[1] }}º</div></div>
-<div><div class="qq l">Bedroom Temp:</div><div class="qq r">{{ current_climate[2] }}º</div></div>
-<div><div class="qq l">Kitchen Temp:</div><div class="qq r">{{ current_climate[2] }}º</div></div>
-<div><div class="qq l">Target Temp:</div><div class="qq r">{{ current_climate[3] }}º</div></div>
+<div><div class="qq l">Outside Temp:</div><div class="qq r">{{ webstate['outsideTemp'] }}º</div></div>
+<div><div class="qq l">Bedroom Temp:</div><div class="qq r">{{ webstate['bedroomTemp'] }}º</div></div>
+<div><div class="qq l">Kitchen Temp:</div><div class="qq r">{{ webstate['kitchenTemp'] }}º</div></div>
+<div><div class="qq l">Target Temp:</div><div class="qq r">{{ webstate['targetTemp'] }}º</div></div>
 <div>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
