@@ -86,18 +86,22 @@ def tojson():
             configuration.write(configfile)
 
 #    if request.method == 'GET':
-    current_climate= database.select_last()
-    current_climate=current_climate[0]
+    file = open('webstate.json', 'r')
+    state = json.load(file)
+    file.close()
 
-    state = {}
-    state['time'] = current_climate[0].timestamp()
-    state['inside_temp'] = current_climate[2]
-    state['outside_temp'] = current_climate[1]
-    state['target_temp_saved'] = configuration['APP']['target_temp']
-    state['target_temp'] = current_climate[3]
-    state['system_state'] = configuration['APP']['status']
-    state['fan_state'] = "on" if current_climate[4] == 1 else "off"
-    state['mode'] = configuration['APP']['mode']
+    # current_climate= database.select_last()
+    # current_climate=current_climate[0]
+    #
+    # state = {}
+    # state['time'] = current_climate[0].timestamp()
+    # state['inside_temp'] = current_climate[2]
+    # state['outside_temp'] = current_climate[1]
+    # state['target_temp_saved'] = configuration['APP']['target_temp']
+    # state['target_temp'] = current_climate[3]
+    # state['system_state'] = configuration['APP']['status']
+    # state['fan_state'] = "on" if current_climate[4] == 1 else "off"
+    # state['mode'] = configuration['APP']['mode']
     # print(json.dumps(state))
     return  json.dumps(state)
 

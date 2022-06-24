@@ -6,6 +6,7 @@ import datetime
 # import database
 import configparser
 import math
+import json
 
 # targetTemp = 67.0
 # updateRate = 290  # seconds
@@ -87,6 +88,19 @@ while True:
     print(
         "{0}: {1:4} {2:3} {3:4} {4}".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
                                             wemoSwitch.get_state()))
+
+    #store for webview
+    webstate = {}
+    webstate['time'] = now.strftime("%c")
+    webstate['outsideTemp'] = outsideTemp
+    webstate['kitchenTemp'] = kitchenTemp
+    webstate['bedroomTemp'] = bedroomTemp
+    webstate['targetTemp'] = targetTemp
+    webstate['desiredState'] = desiredState
+    file = open("webstate.json", "w")
+    file.write(json.dumps(webstate))
+    file.close()
+
     # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
     sleepTime = updateRate - math.floor(time.time()) % updateRate
     if updateRate != 290:
