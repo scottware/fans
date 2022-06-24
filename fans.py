@@ -26,6 +26,7 @@ kitchenNest = nestTest.NestTest(kitchen_thermostat_name, client_id, client_secre
 
 print ("{0}: {1:4} {2:3} {3:4} {4}".format("Time", "outsideTemp", "insideTemp", "targetTemp",
                                     "wemoSwitch"))
+wemoSwitch = None
 
 while True:
 
@@ -34,7 +35,8 @@ while True:
     now = datetime.datetime.now()
     desiredState = 0
 
-    wemoSwitch = wemo.getWeMo()
+    if wemoSwitch == None:
+        wemoSwitch = wemo.getWeMo()
     if wemoSwitch == None:
         print("failed to find wemo")
         time.sleep(10)
