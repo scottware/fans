@@ -87,7 +87,7 @@ def tojson():
 
 #    if request.method == 'GET':
     file = open('webstate.json', 'r')
-    state = json.load(file)
+    webstate = json.load(file)
     file.close()
 
     # current_climate= database.select_last()
@@ -103,7 +103,7 @@ def tojson():
     # state['fan_state'] = "on" if current_climate[4] == 1 else "off"
     # state['mode'] = configuration['APP']['mode']
     # print(json.dumps(state))
-    return  json.dumps(state)
+    return  json.dumps(webstate)
 
 
 
