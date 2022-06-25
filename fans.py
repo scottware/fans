@@ -35,8 +35,7 @@ while True:
     now = datetime.datetime.now()
     desiredState = 0
 
-    if wemoSwitch == None:
-        wemoSwitch = wemo.getWeMo()
+    wemoSwitch = wemo.getWeMo()
     if wemoSwitch == None:
         print("failed to find wemo")
         time.sleep(10)
