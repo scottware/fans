@@ -62,17 +62,6 @@ while True:
         continue
     insideTemp = (bedroomTemp + kitchenTemp) / 2.0
 
-    if configuration['APP'].get('status') == 'off':
-        if wemoSwitch.get_state() != 0:
-            wemoSwitch.set_state(0)
-        print(
-            "{0}: {1:4} {2:4} {3} -- System is OFF".format(now.strftime("%c"), outsideTemp, insideTemp,
-                                                wemoSwitch.get_state()))
-        # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
-        sleepTime = updateRate - math.floor(time.time()) % updateRate
-        time.sleep(sleepTime)
-        continue
-
     if (insideTemp <= targetTemp):
         desiredState = 0
     else:
@@ -85,14 +74,6 @@ while True:
         else:
             desiredState = 0
 
-    if wemoSwitch.get_state() != desiredState:
-        wemoSwitch.set_state(desiredState)
-        print("--- State Change at {0} ---".format(now.strftime("%c")))
-
-    print(
-        "{0}: {1:4} {2:3} {3:4} {4}".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
-                                            wemoSwitch.get_state()))
-
     #store for webview
     webstate = {}
     webstate['time'] = now.strftime("%b %d, %I:%M %p")
@@ -104,6 +85,23 @@ while True:
     file = open("webstate.json", "w")
     file.write(json.dumps(webstate))
     file.close()
+
+    if configuration['APP'].get('status') == 'off':
+        if wemoSwitch.get_state() != 0:
+            wemoSwitch.set_state(0)
+        print(
+            "{0}: {1:4} {2:4} {3} -- System is OFF".format(now.strftime("%c"), outsideTemp, insideTemp,
+                                                wemoSwitch.get_state()))
+        # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
+
+    elif wemoSwitch.get_state() != desiredState:
+        wemoSwitch.set_state(desiredState)
+        print("--- State Change at {0} ---".format(now.strftime("%c")))
+
+    print(
+        "{0}: {1:4} {2:3} {3:4} {4}".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
+                                            wemoSwitch.get_state()))
+
 
     # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
     sleepTime = updateRate - math.floor(time.time()) % updateRate
