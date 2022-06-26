@@ -60,20 +60,19 @@ while True:
         kitchenNest.NestKitchen = None
         time.sleep(10)
         continue
+    insideTemp = (bedroomTemp + kitchenTemp) / 2.0
 
-    print(configuration['APP'].get('status'))
     if configuration['APP'].get('status') == 'off':
         if wemoSwitch.get_state() != 0:
             wemoSwitch.set_state(0)
         print(
-            "{0}: {1:4} {2:4} {3} -- System is OFF".format(now.strftime("%c"), outsideTemp, targetTemp,
+            "{0}: {1:4} {2:4} {3} -- System is OFF".format(now.strftime("%c"), outsideTemp, insideTemp,
                                                 wemoSwitch.get_state()))
         # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
         sleepTime = updateRate - math.floor(time.time()) % updateRate
         time.sleep(sleepTime)
         continue
 
-    insideTemp = (bedroomTemp + kitchenTemp) / 2.0
     if (insideTemp <= targetTemp):
         desiredState = 0
     else:
