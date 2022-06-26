@@ -8,17 +8,13 @@ import configparser
 import math
 import json
 
-# targetTemp = 67.0
-# updateRate = 290  # seconds
 wemoSwitch = None
 
 configuration = configparser.ConfigParser()
 configuration.read('config.ini')
 client_id = configuration['NEST'].get('client_id')
 client_secret = configuration['NEST'].get('client_secret')
-# nest_auth_url = configuration['NEST'].get('nest_auth_url')
 access_token_cache_file = configuration['NEST'].get('access_token_cache_file')
-# product_version = configuration['NEST'].getint('product_version')
 bedroom_thermostat_name = configuration['NEST'].get('bedroom_thermostat_name')
 kitchen_thermostat_name = configuration['NEST'].get('kitchen_thermostat_name')
 
@@ -55,7 +51,6 @@ while True:
         kitchenTemp = kitchenNest.getNestTemp()
     except:
         print("failed to connect to nest:")
-        # print(nt.NestBedroom)
         bedroomNest.NestBedroom = None
         kitchenNest.NestKitchen = None
         time.sleep(10)
@@ -89,22 +84,16 @@ while True:
     if configuration['APP'].get('status') == 'off':
         if wemoSwitch.get_state() != 0:
             wemoSwitch.set_state(0)
-        print(
-            "{0}: {1:4} {2:4} {3} -- System is OFF".format(now.strftime("%c"), outsideTemp, insideTemp,
-                                                wemoSwitch.get_state()))
-        # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
 
     elif wemoSwitch.get_state() != desiredState:
         wemoSwitch.set_state(desiredState)
-        print("--- State Change at {0} ---".format(now.strftime("%c")))
+        print("--- State Change at {0} ---".format(now.strftime("%b %d, %I:%M %p")))
 
     print(
-        "{0}: {1:4} {2:3} {3:4} {4}".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
-                                            wemoSwitch.get_state()))
+        "{0}: {1:4}º {2:3}º {3:4}º Setting:{4} System:{5}".format(now.strftime("%b %d, %I:%M %p"),
+               outsideTemp, insideTemp, targetTemp,
+                'ON' if wemoSwitch.get_state() == 1 else 'OFF',
+               configuration['APP'].get('status').upper() ))
 
-
-    # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
     sleepTime = updateRate - math.floor(time.time()) % updateRate
-    if updateRate != 290:
-        print("next update in {0} seconds".format(sleepTime))
     time.sleep(sleepTime)
