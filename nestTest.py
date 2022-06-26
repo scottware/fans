@@ -25,15 +25,14 @@ class NestTest:
         napi = nest.Nest(client_id=self.client_id, client_secret=self.client_secret,
                          access_token_cache_file=self.access_token_cache_file)
 
-        for x in napi.thermostats:
-            print(x.name)
+
         thermostat = next((x for x in napi.thermostats if x.name == self.thermostatName), None)
         return thermostat
 
     def getNestTemp(self):
         if self.Thermostat == None:
             self.Thermostat = self.getThermostat(self.thermostatName)
-            print("fetching thermostat")
+            print("fetching thermostat ", self.thermostatName)
         return self.Thermostat.temperature
 
 
