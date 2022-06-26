@@ -10,6 +10,7 @@ import json
 
 # targetTemp = 67.0
 # updateRate = 290  # seconds
+wemoSwitch = None
 
 configuration = configparser.ConfigParser()
 configuration.read('config.ini')
@@ -26,9 +27,11 @@ kitchenNest = nestTest.NestTest(kitchen_thermostat_name, client_id, client_secre
 
 print ("{0}: {1:4} {2:3} {3:4} {4}".format("Time", "outsideTemp", "insideTemp", "targetTemp",
                                     "wemoSwitch"))
-wemoSwitch = None
 
 while True:
+    ## Needs to be reopened so that changes are picked up
+    configuration = configparser.ConfigParser()
+    configuration.read('config.ini')
 
     targetTemp = configuration['APP'].getfloat('target_temp')
     updateRate = configuration['APP'].getint('update_frequency')
@@ -58,11 +61,12 @@ while True:
         time.sleep(10)
         continue
 
+    print(configuration['APP'].get('status'))
     if configuration['APP'].get('status') == 'off':
         if wemoSwitch.get_state() != 0:
             wemoSwitch.set_state(0)
         print(
-            "{0}: {1:4} {2:3} {3:4} {4} -- System is OFF".format(now.strftime("%c"), outsideTemp, insideTemp, targetTemp,
+            "{0}: {1:4} {2:4} {3} -- System is OFF".format(now.strftime("%c"), outsideTemp, targetTemp,
                                                 wemoSwitch.get_state()))
         # database.insert(outsideTemp, insideTemp, targetTemp, desiredState)
         sleepTime = updateRate - math.floor(time.time()) % updateRate
