@@ -92,7 +92,7 @@ while True:
     print(
         "{0}: {1:4}º {2:3}º {3:4}º Setting:{4} System:{5}".format(now.strftime("%b %d, %I:%M %p"),
                outsideTemp, insideTemp, targetTemp,
-                'ON' if wemoSwitch.get_state() == 1 else 'OFF',
+                'ON' if desiredState == 1 else 'OFF',
                configuration['APP'].get('status').upper() ))
 
     sleepTime = updateRate - math.floor(time.time()) % updateRate
